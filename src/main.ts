@@ -88,18 +88,27 @@ class RuleEngine<A extends string, T extends string> {
         path.shift()
         return res
     }
-    load(rule: Rule<A, T>): void {
+    load(rule: Rule<A, T>, haltOnceFailed?: boolean): void
+    load(rule: Rule<A, T>, haltOnceFailed?: boolean, log?: true): string[] {
+        const errs: string[] = []
         try {
             this._check(rule)
         } catch (e) {
             if (e instanceof RuleCheckError) {
-                console.error(e.message)
-                return
+                if (haltOnceFailed) {
+                    throw e
+                }
+                if (log) {
+                    errs.push(e.message)
+                } else {
+                    console.error(e.message)
+                }
             } else {
                 throw e
             }
         }
         this._rules.push(rule)
+        return errs
     }
     private _test(
         rule: Rule<A, T>,
@@ -178,7 +187,7 @@ class RuleEngine<A extends string, T extends string> {
         }
         return match
     }
-    exec(input: any): A {
+    exec(input: any, lazyMatch: boolean = true): A {
         const rules: Rule<A, T>[] = [
             ...this._rules,
             {
@@ -190,10 +199,13 @@ class RuleEngine<A extends string, T extends string> {
         const actions: A[] = []
         for (const i in rules) {
             this._test(rules[i], input, [i], matches, actions)
+            if (lazyMatch && actions.length > 0) {
+                break
+            }
         }
         return actions.shift()
     }
 }
 
 export { Rule, RuleFn, RuleFnMap }
-export { RuleEngine }
+export { RuleEngine, RuleCheckError }
