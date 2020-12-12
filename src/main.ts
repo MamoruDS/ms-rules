@@ -24,12 +24,12 @@ class RuleEngine<A extends string, T extends string> {
         const e = (msg: string, format: boolean = true) => {
             const errorMsg = format
                 ? msg +
-                  ` at line:${path[0].lineNr}\n\tpath: ${[...path]
+                  ` at line:${path[0].lineNr}; path: [${[...path]
                       .reverse()
                       .map((p) => {
                           return p.type
                       })
-                      .join('/')}`
+                      .join('/')}]`
                 : msg
             path.shift()
             throw new RuleCheckError(errorMsg)
@@ -69,7 +69,19 @@ class RuleEngine<A extends string, T extends string> {
                 }
             }
         } else if (Object.keys(this._ruleFnMap).indexOf(rule.type) != -1) {
-            // TODO: check value
+            const valType = this._ruleFnMap[rule.type as T].valType || false
+            if (
+                valType &&
+                (valType != 'array'
+                    ? typeof rule.value != valType
+                    : !Array.isArray(rule.value))
+            ) {
+                e(
+                    `[ERR] Invalid rule value: <${valType}> is required but given '${
+                        rule.value
+                    }' as <${typeof rule.value}>`
+                )
+            }
         } else {
             e(`[ERR] Unknown type '${rule.type}'`)
         }
@@ -125,9 +137,24 @@ class RuleEngine<A extends string, T extends string> {
             }
         }
         if (Object.keys(this._ruleFnMap).indexOf(rule.type) != -1) {
-            match = this._ruleFnMap[rule.type as T]?.fn(input, rule.value)
-                ? 1
-                : 0
+            const ruleFn = this._ruleFnMap[rule.type as T]
+            const inType = ruleFn.inputType
+            if (inType && typeof inType == 'function') {
+                if (!inType(input)) {
+                    match = 0
+                } else {
+                    match = ruleFn?.fn(input, rule.value) ? 1 : 0
+                }
+            } else if (
+                inType &&
+                (inType != 'array'
+                    ? typeof input != inType
+                    : !Array.isArray(input))
+            ) {
+                match = 0
+            } else {
+                match = ruleFn?.fn(input, rule.value) ? 1 : 0
+            }
         }
         if (match == 1) {
             const _index = [...index]

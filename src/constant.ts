@@ -26,6 +26,7 @@ const RULE_FN_MAP_RESERVED: RuleFnMap<TYPE_RESERVED> = {
                 return Boolean(input['lhs'] & input['rhs'])
             }
         },
+        valType: 'undefined',
     },
     OR: {
         fn: (input: { lhs: number; rhs: number }) => {
@@ -35,16 +36,19 @@ const RULE_FN_MAP_RESERVED: RuleFnMap<TYPE_RESERVED> = {
                 return Boolean(input['lhs'] | input['rhs'])
             }
         },
+        valType: 'undefined',
     },
     NOT: {
         fn: (input: { lhs: number; rhs: number }) => {
             return !Boolean(input['rhs'])
         },
+        valType: 'undefined',
     },
     FINAL: {
         fn: () => {
             return true
         },
+        valType: 'undefined',
     },
 }
 

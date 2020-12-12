@@ -13,8 +13,23 @@ type RuleFn = (input: any, value?: any) => boolean
 type RuleFnMap<T extends string> = {
     [key in T]: {
         fn: RuleFn
-        // TODO: value requirements
-        // TODO: input requirements
+        valType?:
+            | 'undefined'
+            | 'object'
+            | 'array'
+            | 'boolean'
+            | 'number'
+            | 'string'
+            | 'function'
+        inputType?:
+            | 'undefined'
+            | 'object'
+            | 'array'
+            | 'boolean'
+            | 'number'
+            | 'string'
+            | 'function'
+            | ((input: any) => boolean)
     }
 }
 
