@@ -1,5 +1,5 @@
 import * as CONST from './constant'
-import { Rule, RuleFn, RuleFnMap, Path, RuleCheckError } from './types'
+import { Rule, RuleFn, RuleFnMap, Path, Matches, RuleCheckError } from './types'
 
 class RuleEngine<A extends string, T extends string> {
     private _ruleFnMap: RuleFnMap<T>
@@ -169,7 +169,7 @@ class RuleEngine<A extends string, T extends string> {
             const _index = [...index]
             let t = matches
             while (_index.length != 0) {
-                const i = _index.shift()
+                const i = parseInt(_index.shift())
                 if (typeof t[i] == 'undefined') {
                     t[i] = {
                         match: false,
@@ -187,7 +187,13 @@ class RuleEngine<A extends string, T extends string> {
         }
         return match
     }
-    exec(input: any, lazyMatch: boolean = true): A {
+    exec(
+        input: any,
+        lazyMatch: boolean = true
+    ): {
+        matches: Matches<A>
+        action: A
+    } {
         const rules: Rule<A, T>[] = [
             ...this._rules,
             {
@@ -195,7 +201,7 @@ class RuleEngine<A extends string, T extends string> {
                 action: this._final,
             },
         ]
-        const matches = {}
+        const matches = {} as Matches<A>
         const actions: A[] = []
         for (const i in rules) {
             this._test(rules[i], input, [i], matches, actions)
@@ -203,7 +209,10 @@ class RuleEngine<A extends string, T extends string> {
                 break
             }
         }
-        return actions.shift()
+        return {
+            matches,
+            action: actions.shift(),
+        }
     }
 }
 

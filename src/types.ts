@@ -45,5 +45,23 @@ class RuleCheckError extends Error {
     }
 }
 
-export { Rule, RuleFn, RuleFnMap, Path }
+type _Decimal = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+type Decimal = '0' | _Decimal
+
+type MatchKey =
+    | 'match'
+    | 'action'
+    | `${Decimal}` // 0 - 9
+    | `${_Decimal}${Decimal}` // 10 - 99
+
+type Matches<A> = {
+    [key in MatchKey]: key extends 'match'
+        ? boolean
+        : key extends 'action'
+        ? A
+        : Matches<A>
+}
+
+export { Rule, RuleFn, RuleFnMap, Path, Matches }
 export { RuleCheckError }
