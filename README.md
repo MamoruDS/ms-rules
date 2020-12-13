@@ -2,7 +2,7 @@
 
 > Simple rule engine written in TS
 
-![npm](https://img.shields.io/npm/v/ms-rules.svg?style=flat-square)
+[![npm](https://img.shields.io/npm/v/ms-rules.svg?style=flat-square)](https://www.npmjs.com/package/ms-rules) [![](https://img.shields.io/npm/v/ms-rules/beta?style=flat-square)](https://www.npmjs.com/package/ms-rules)
 
 ## Installation
 
@@ -130,6 +130,23 @@ rule.exec({
 
 rule.exec(500)
 ```
+
+### Show plot in terminal
+
+```javascript
+rule.exec(
+    {
+        id: '12345671890',
+        message: 'something contains word_2',
+    },
+    true,
+    false
+)
+```
+
+![](https://raw.githubusercontent.com/MamoruDS/ms-rules/dev/static/Screen%20Shot%202020-12-13%20at%2011.43.22%20AM.png)
+
+## Changelog
 
 ## License
 

@@ -51,27 +51,50 @@ rule.load({
                     type: 'keyword',
                     value: 'word_3',
                 },
+                {
+                    type: 'NOT',
+                    list: [
+                        {
+                            type: 'keyword',
+                            value: 'blocked_word',
+                        },
+                    ],
+                },
             ],
         },
     ],
 })
 
 // ## Test your rules
-let res
-res = rule.exec({
+let action
+
+action = rule.exec({
     id: '1234567890',
     message: 'something contains word_2',
-})
-console.log(res) // HIDE
+}).action
+console.log(action) // HIDE
 
-res = rule.exec({
+action = rule.exec({
     id: '1234567890',
     message: 'bonjour',
-})
-console.log(res) // PUSH
+}).action
+console.log(action) // PUSH
 
-res = rule.exec({
-    id: '0987654321',
-    message: 'something contains word_3',
-})
-console.log(res) // PUSH
+action = rule.exec(
+    {
+        id: '0987654321',
+        message: 'something contains word_3',
+    },
+    false // disable lazyMatch (optional)
+).action
+console.log(action) // PUSH
+
+// ### Show match plot in terminal
+rule.exec(
+    {
+        id: '12345671890',
+        message: 'something contains word_2',
+    },
+    true,
+    false
+)
