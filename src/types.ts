@@ -63,5 +63,7 @@ type Matches<A> = {
         : Matches<A>
 }
 
-export { Rule, RuleFn, RuleFnMap, Path, Matches }
+type RuleLineStatus = -1 | 0 | 1 | 2
+
+export { Rule, RuleFn, RuleFnMap, Path, Matches, RuleLineStatus }
 export { RuleCheckError }
