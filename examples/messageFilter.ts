@@ -47,6 +47,15 @@ rule.load({
                     type: 'keyword',
                     value: 'word_3',
                 },
+                {
+                    type: 'NOT',
+                    list: [
+                        {
+                            type: 'keyword',
+                            value: 'blocked_word',
+                        },
+                    ],
+                },
             ],
         },
     ],
@@ -75,3 +84,13 @@ action = rule.exec(
     false // disable lazyMatch (optional)
 ).action
 console.log(action) // PUSH
+
+// ### Show match plot in terminal
+rule.exec(
+    {
+        id: '12345671890',
+        message: 'something contains word_2',
+    },
+    true,
+    false
+)
