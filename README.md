@@ -144,7 +144,7 @@ rule.exec(
 )
 ```
 
-![](https://raw.githubusercontent.com/MamoruDS/ms-rules/dev/static/Screen%20Shot%202020-12-13%20at%2011.43.22%20AM.png)
+<img src="https://raw.githubusercontent.com/MamoruDS/ms-rules/dev/static/Screen%20Shot%202020-12-13%20at%2011.43.22%20AM.png" width="550">
 
 ## Changelog
 
