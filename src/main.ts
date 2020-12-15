@@ -102,7 +102,6 @@ class RuleEngine<A extends string, T extends string> {
         path.shift()
         return res
     }
-    load(rule: Rule<A, T>, haltOnceFailed?: boolean): void
     load(rule: Rule<A, T>, haltOnceFailed?: boolean, log?: true): string[] {
         const errs: string[] = []
         try {
