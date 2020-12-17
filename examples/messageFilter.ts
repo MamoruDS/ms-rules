@@ -3,8 +3,12 @@ import { RuleEngine } from '../src/main'
 import { RuleFnMap } from '../src/main'
 // import { RuleFnMap } from 'ms-rules'
 
+const actions = ['PUSH', 'DISCARD'] as const
+
 type RuleType = 'id' | 'keyword'
-type RuleAction = 'HIDE' | 'PUSH'
+type RuleAction = typeof actions[number]
+
+const _: RuleAction = 'PUSH'
 
 // ## Define your function map
 const fnMap: RuleFnMap<RuleType> = {
@@ -22,11 +26,12 @@ const fnMap: RuleFnMap<RuleType> = {
 
 // ## Declare your rule engine
 const rule = new RuleEngine<RuleAction, RuleType>(fnMap, 'PUSH')
+rule.actions = [...actions]
 
 // ## Load your rules
 rule.load({
     type: 'AND',
-    action: 'HIDE',
+    action: 'DISCARD',
     list: [
         {
             type: 'id',
@@ -68,7 +73,7 @@ action = rule.exec({
     id: '1234567890',
     message: 'something contains word_2',
 }).action
-console.log(action) // HIDE
+console.log(action) // DISCARD
 
 action = rule.exec({
     id: '1234567890',
