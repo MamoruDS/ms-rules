@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2
+
+### Added:
+- new property `actions` in `RuleEngine`
+- `getter` / `setter` for properties `actions` and `final`
+- strict action name checking in `RuleEngine._test`
+
 ## 1.0.1
 
 ### Added

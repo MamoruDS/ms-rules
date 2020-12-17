@@ -1,6 +1,8 @@
 const RuleEngine = require('../dist/main').RuleEngine
 // const RuleEngine = require('ms-rules').RuleEngine
 
+const actions = ['PUSH', 'DISCARD']
+
 // ## Define your function map
 const fnMap = {
     id: {
@@ -26,11 +28,12 @@ const fnMap = {
 
 // ## Declare your rule engine
 const rule = new RuleEngine(fnMap, 'PUSH')
+rule.actions = actions
 
 // ## Load your rules
 rule.load({
     type: 'AND',
-    action: 'HIDE',
+    action: 'DISCARD',
     list: [
         {
             type: 'id',
@@ -72,7 +75,7 @@ action = rule.exec({
     id: '1234567890',
     message: 'something contains word_2',
 }).action
-console.log(action) // HIDE
+console.log(action) // DISCARD
 
 action = rule.exec({
     id: '1234567890',
