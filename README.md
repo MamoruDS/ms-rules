@@ -21,6 +21,8 @@ You can find full examples from [examples folder](https://github.com/MamoruDS/ms
     ```javascript
     const RuleEngine = require('ms-rules').RuleEngine
 
+    const ACTIONS = ['ACTION_1', 'ACTION_2']
+
     // Define your function map
     const fnMap = {
         type1: {
@@ -48,6 +50,7 @@ You can find full examples from [examples folder](https://github.com/MamoruDS/ms
 
     // Declare your rule engine
     const rule = new RuleEngine(fnMap, 'FINAL_ACTION')
+    rule.actions = ACTIONS // optional action name checking
     ```
 
 -   TS
@@ -55,8 +58,11 @@ You can find full examples from [examples folder](https://github.com/MamoruDS/ms
     ```typescript
     import { RuleEngine } from 'ms-rules'
 
+    const ACTIONS = ['ACTION_1', 'ACTION_2'] as const
+
     type RuleType = 'type1' | 'type2'
-    type RuleAction = 'ACTION_1' | 'ACTION_2'
+    type RuleAction = typeof ACTIONS[number]
+    // type RuleAction = 'ACTION_1' | 'ACTION_2' // alternaitve
 
     // Define your function map
     const fnMap: RuleFnMap<RuleType> = {
@@ -82,6 +88,7 @@ You can find full examples from [examples folder](https://github.com/MamoruDS/ms
 
     // Declare your rule engine
     const rule = new RuleEngine<RuleAction, RuleType>(fnMap, 'ACTION_2')
+    rule.actions = ACTIONS // optional action name checking
     ```
 
 ### rule register
@@ -144,9 +151,13 @@ rule.exec(
 )
 ```
 
-<img src="https://raw.githubusercontent.com/MamoruDS/ms-rules/dev/static/Screen%20Shot%202020-12-13%20at%2011.43.22%20AM.png" width="550">
+<p align="center">
+  <img width="550px" src="https://raw.githubusercontent.com/MamoruDS/ms-rules/dev/static/Screen%20Shot%202020-12-13%20at%2011.43.22%20AM.png">
+</p>
 
 ## Changelog
+
+[link](https://github.com/MamoruDS/ms-rules/blob/main/CHANGELOG.md) of changelogs.
 
 ## License
 
