@@ -19,10 +19,23 @@ class RuleEngine<A extends string, T extends string> {
     private _ruleFnMap: RuleFnMap<T>
     private _rules: Rule<A, T>[]
     private _final: A
+    private _actions: A[] = []
     constructor(fnMap: RuleFnMap<T>, finalAction: A) {
         this._ruleFnMap = fnMap
         this._rules = []
         this._final = finalAction
+    }
+    get final(): A {
+        return this._final
+    }
+    set final(action: A) {
+        this._final = action
+    }
+    get actions(): A[] {
+        return this._actions
+    }
+    set actions(actions: A[]) {
+        this._actions = actions
     }
     private _check(
         rule: Rule<A, T>,
@@ -64,6 +77,14 @@ class RuleEngine<A extends string, T extends string> {
         if (!isSubRule() && typeof rule.action == 'undefined') {
             // TODO:
             e(`Missing property 'action' of rule`)
+        } else if (typeof rule.action != 'undefined') {
+            if (
+                Array.isArray(this._actions) &&
+                this._actions.length > 0 &&
+                this._actions.indexOf(rule.action) == -1
+            ) {
+                e(`Unknown action '${rule.action}'`)
+            }
         }
         if (CONST.TYPE_SINGLE.indexOf(rule.type) != -1) {
         } else if (CONST.TYPE_GROUP.indexOf(rule.type) != -1) {
